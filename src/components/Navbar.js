@@ -198,7 +198,7 @@ class Nav extends React.Component {
                 <AppBar style={{ background: "rgb(20, 20, 20)" }} position="static">
                     <Toolbar>
                         <Link to='/' style={{ color: "#ffffff", textDecoration: "none", cursor: 'pointer'}}>
-                            <div>The Happy Place</div> 
+                            <div>The Venting Machine</div> 
                         </Link>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
