@@ -122,7 +122,7 @@ class Nav extends React.Component {
     };
 
     loadData = async () => {
-        await this.props.getUser();
+        await this.props.getUser(this.props.userReducer.user.user_id);
         if (this.props.user.user_id) {
             this.setState({ loggedIn: true, refresh: false });
         }
@@ -132,11 +132,11 @@ class Nav extends React.Component {
         this.loadData();
     };
 
-    componentDidUpdate = () => {
-        if (this.state.refresh) {
-            this.loadData();
-        }
-    };
+    // componentDidUpdate = () => {
+    //     if (this.state.refresh) {
+    //         this.loadData();
+    //     }
+    // };
 
     handleProfileMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -165,9 +165,9 @@ class Nav extends React.Component {
         this.setState({ showLogin: false, showRegister: false, modal: false });
     };
 
-    toggleRefresh = () => {
-        this.setState({ refresh: true });
-    };
+    // toggleRefresh = () => {
+    //     this.setState({ refresh: true });
+    // };
 
     render() {
         console.log(this.props)

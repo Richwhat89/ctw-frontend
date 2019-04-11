@@ -10,19 +10,17 @@ const ADD_REPLY = 'ADD REPLY';
 const EDIT_REPLY = 'EDIT_REPLY';
 const DELETE_REPLY =  'DELETE_REPLY';
 
-export function allReplies(post_id){
+export function allReplies(user_id, post_id){
     return{
         type: ALL_REPLIES,
-        payload: axios.get(
-            //api url, 
-            allReplies)
+        payload: axios.get('https://radiant-stream-98137.herokuapp.com/reply', {user_id, post_id})
     }
 }
 
-export function reply(reply){
+export function reply(user_id, post_id, reply){
     return{
         type: ADD_REPLY,
-        payload: axios.post( 'https://radiant-stream-98137.herokuapp.com/reply/addReply', reply)
+        payload: axios.post( 'https://radiant-stream-98137.herokuapp.com/reply', {user_id, post_id, reply})
     }
 }
 

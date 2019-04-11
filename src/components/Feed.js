@@ -27,44 +27,86 @@ const Feed = props => {
     const handlePost = e => {
         e.preventDefault();
         props.post(
-            props.userReducer.user_id,
+            props.userReducer.user.user_id,
             inputs.post
         );
     };
 
-    const handleReply = e => {
+    const handleReply = (e) => {
         e.preventDefault();
         props.reply(
-            inputs.reply
+            inputs.reply,
+            inputs.user_id,
+            inputs.post_id
         );
+        console.log(inputs.reply, inputs.user_id, inputs.post_id)
     };
 
-    const showReplies = user_id => {
-        props.allReplies(user_id);
-        setModal(true)    
+    const showReplies = post_id => {
+        props.allReplies(post_id); 
     }
 
     const closeReplies = () => {
-        setModal(false)
     };
 
     useEffect(()=>{
         props.allPosts();
     }, []);
 
+    useEffect(()=>{
+        props.allReplies()
+    }, []);
+
     let postMap = [];
-    if (props.postReducer.posts){
-        postMap = props.postReducer.posts.map((e,i)=>{
-            return(
-                <h1 key={i} onClick={()=>showReplies(e.post_id)}>
-                   {e.name}
-                </h1>
-            );
-        });
+    if (props.postReducer.allPosts) {
+        postMap = props.postReducer.allPosts.map((e,i) => {
+            let date = new Date(e.date)
+            return (
+            <div>
+            <h1 key={i} onClick={showReplies()}>
+                {e.name}<br></br>
+                {`${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`}<br></br>
+                {e.post}
+            </h1>
+            
+                <PostFormat>
+                <>
+                    <p>What's your feedback?</p>   
+                    <textarea name="reply" rows='5' cols='100' onChange={onChange} />
+                </>
+                    <div>
+                        <Button variant='contained' style={{cursor: 'pointer'}} onClick={handleReply}>Reply</Button>
+                    </div>
+                    <div>
+                        {replyMap} 
+                    </div>
+                </PostFormat>
+            </div>
+        )
+        } 
+        )
     }
 
-    console.log(props.postReducer)
-    console.log(props.userReducer)
+    let replyMap = [];
+    if (props.replyReducer.allReplies) {
+        replyMap = props.replyReducer.allReplies.map((e,i) => {
+            let date = new Date(e.date)
+            return (
+            <h1 key={i}>
+                {e.name}<br></br>
+                {`${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`}<br></br>
+                {e.reply}
+            </h1>)
+        } 
+        )
+    }
+
+
+    console.log(props)
+    console.log(reply)
+    console.log(props.replyReducer.allReplies)
+    console.log(props.userReducer.user.user_id)
+    console.log(postMap)
     return (
         <FeedStyle>
             <PostFormat>
@@ -81,13 +123,12 @@ const Feed = props => {
                     open={modal}
                     onClose={closeReplies}
                 >
-                
                 <div>
-                   {props.replyReducer.replies.map((e,i)=><h1>{e.name}</h1>)} 
+                   {replyMap} 
                 </div>
             </Modal>
             <FeedFormat>
-                {postMap}
+                    {postMap}
             </FeedFormat>
         </FeedStyle>
     );
@@ -126,17 +167,26 @@ const PostFormat = styled.div`
 `;
 
 const FeedFormat = styled.div`
-    height: 20vh;
+    height: 60vh;
     width: 80vw;
-    z-index: 1000;
     background-color: rgba(192, 192, 192, 0.9);
-    color: white;
     margin: auto;
+    color: black;
     text-align: center;
-`
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
 
-const Text = styled.div`
-    height: 15vh;
-    width: 100%;
-    margin-left: 13vw;
+    h1 {
+        height: 15vh;
+        width: 80vw;
+        margin: auto;
+        color: black;
+        border: solid black
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 `
